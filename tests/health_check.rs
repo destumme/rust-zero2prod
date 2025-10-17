@@ -4,7 +4,7 @@ async fn health_check_works() {
     // Arrange
     spawn_app();
 
-    let client= reqwest::Client::new();
+    let client = reqwest::Client::new();
 
     // Act
     let response = client
@@ -17,7 +17,7 @@ async fn health_check_works() {
     assert!(response.status().is_success());
     assert_eq!(Some(0), response.content_length());
 }
-fn spawn_app()  {
+fn spawn_app() {
     let server = zero2prod::run().expect("Failed to bind address");
     let _ = tokio::spawn(server);
 }
