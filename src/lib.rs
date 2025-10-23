@@ -6,8 +6,17 @@ async fn health_check() -> HttpResponse {
     HttpResponse::Ok().finish()
 }
 
-async fn subscribe() -> HttpResponse {
-    HttpResponse::Ok().finish()
+#[derive(serde::Deserialize)]
+struct FormData {
+    email: String,
+    name: String,
+}
+
+async fn subscribe(form: web::Form<FormData>) -> HttpResponse {
+    HttpResponse::Ok().body(format!(
+        "Thanks {} for signing up with {}",
+        form.name, form.email
+    ))
 }
 
 pub fn run(listener: TcpListener) -> Result<Server, std::io::Error> {
