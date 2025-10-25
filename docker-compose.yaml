@@ -13,6 +13,6 @@ services:
     environment:
       - POSTGRES_USER=${PG_SUPERUSER:-postgres}
       - POSTGRES_PASSWORD=${PG_SUPERUSER_PWD:-somepass}
-      - PG_DB_NAME=${PG_DB_NAME:-newsletter}
-      - PG_APP_USER=${PG_APP_USER:-docker}
-      - PG_APP_USER_PWD=${PG_APP_USER_PWD:-docker}
+      - APP_CONFIG_DB_NAME=${APP_CONFIG_DB_NAME:-newsletter}
+      - APP_CONFIG_DB_USER=${APP_CONFIG_DB_USER:-docker}
+      - APP_CONFIG_DB_PASSWORD=${APP_CONFIG_DB_PASSWORD:-docker}

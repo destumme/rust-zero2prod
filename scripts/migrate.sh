@@ -12,7 +12,8 @@ if ! [ -x "$(command -v sqlx)" ]; then
 fi
 
 
-export DATABASE_URL=postgres://$PG_SUPERUSER:$PG_SUPERUSER_PWD@127.0.0.1:5432/$PG_DB_NAME
+export DATABASE_URL=postgres://$PG_SUPERUSER:$PG_SUPERUSER_PWD@127.0.0.1:5432/$APP_CONFIG_DB_NAME
 
+#the migrations table is in the public schema, so perms a little messy atm
 sqlx database create
 sqlx migrate run
