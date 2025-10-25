@@ -1,12 +1,12 @@
 use config::Environment;
 
-#[derive(serde::Deserialize)]
+#[derive(Debug, serde::Deserialize)]
 pub struct Settings {
     pub db: DatabaseSettings,
     pub app_port: u16
 }
 
-#[derive(serde::Deserialize, Clone)]
+#[derive(Debug, serde::Deserialize, Clone)]
 pub struct DatabaseSettings {
     pub user: String,
     pub password: String,
@@ -30,8 +30,8 @@ pub fn get_configuration() -> Result<Settings, config::ConfigError> {
         .add_source(
             config::File::new("config.yaml", config::FileFormat::Yaml)
         )
-        .add_source(Environment::with_prefix("app_config"))
+        .add_source(Environment::with_prefix("config").separator("_"))
         .build()?;
-
+    
     settings.try_deserialize::<Settings>()
 }
