@@ -1,4 +1,11 @@
 /target
 
+.envrc
+*.envrc
+envrc*
+!sample.envrc
 
+data/
+
+.DS_Store
 .idea/

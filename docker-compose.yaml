@@ -1,0 +1,18 @@
+name: zero2prod
+
+services:
+  db:
+    image: 'postgres'
+    command: '-N 1000'
+    container_name: ${PG_CONTAINER_NAME:-postgres}
+    ports:
+      - ${PG_PORT:-5432}:5432
+    volumes:
+      - ./data:/var/lib/postgresql/
+      - ./scripts/.init.sh:/docker-entrypoint-initdb.d/init.sh
+    environment:
+      - POSTGRES_USER=${PG_SUPERUSER:-postgres}
+      - POSTGRES_PASSWORD=${PG_SUPERUSER_PWD:-somepass}
+      - PG_DB_NAME=${PG_DB_NAME:-newsletter}
+      - PG_APP_USER=${PG_APP_USER:-docker}
+      - PG_APP_USER_PWD=${PG_APP_USER_PWD:-docker}
