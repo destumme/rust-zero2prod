@@ -1,11 +1,13 @@
 /target
 
+.env
 .envrc
 *.envrc
 envrc*
 !sample.envrc
 
 data/
+.sqlx/
 
 .DS_Store
 .idea/

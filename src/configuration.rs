@@ -3,7 +3,7 @@ use config::Environment;
 #[derive(Debug, serde::Deserialize)]
 pub struct Settings {
     pub db: DatabaseSettings,
-    pub app_port: u16
+    pub app_port: u16,
 }
 
 #[derive(Debug, serde::Deserialize, Clone)]
@@ -24,14 +24,11 @@ impl DatabaseSettings {
     }
 }
 
-
 pub fn get_configuration() -> Result<Settings, config::ConfigError> {
     let settings = config::Config::builder()
-        .add_source(
-            config::File::new("config.yaml", config::FileFormat::Yaml)
-        )
+        .add_source(config::File::new("config.yaml", config::FileFormat::Yaml))
         .add_source(Environment::with_prefix("config").separator("_"))
         .build()?;
-    
+
     settings.try_deserialize::<Settings>()
 }
