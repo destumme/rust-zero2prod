@@ -5,22 +5,36 @@ on:
     branches:
       - main
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [ opened, synchronize, reopened ]
 
 env:
   CARGO_TERM_COLOR: always
-
+  CONFIG_DB_USER: 'docker'
+  CONFIG_DB_PASSWORD: 'docker'
+  CONFIG_DB_NAME: 'newsletter'
+  DATABASE_URL: "postgres://$CONFIG_DB_USER:$CONFIG_DB_PASSWORD@localhost:5432/$CONFIG_DB_NAME"
+  PG_SUPERUSER: 'postgres'
+  PG_SUPERUSER_PWD: 'somepass'
 
 jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
     steps:
+      - name: Set up Docker Compose
+        uses: docker/setup-compose-action@v1
+
       - name: Check out repository code
         uses: actions/checkout@v4
 
       - name: Install the Rust toolchain
         uses: actions-rust-lang/setup-rust-toolchain@v1
+
+      - name: Docker Up
+        run: docker compose up -d
+
+      - name: Migrate
+        run: make migrate
 
       - name: Run tests
         run: cargo test
@@ -60,12 +74,16 @@ jobs:
         uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
           components: llvm-tools-preview
+
       - name: Install cargo-llvm-cov
         uses: taiki-e/install-action@cargo-llvm-cov
+
       - name: Generate code coverage
         run: cargo llvm-cov --all-features --workspace --lcov --output-path lcov.info
+
       - name: Generate report
         run: cargo llvm-cov report --html --output-dir coverage
+
       - uses: actions/upload-artifact@v4
         with:
           name: "Coverage report"
